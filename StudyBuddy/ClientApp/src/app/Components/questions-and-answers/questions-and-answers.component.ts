@@ -59,6 +59,12 @@ export class QuestionsAndAnswersComponent {
   }
 
   newQuestion(addQuestion: QuestionsAndAnswers) {
+    
+    console.log('newQuestion called with:', addQuestion);
+    console.log('User logged in:', this.loggedIn);
+    console.log('User ID:', this.user.id);
+    
+    
     if (!addQuestion.questions.trim() || !addQuestion.answers.trim()) {
       // Display an error message or handle the lack of input
       console.error('Both questions and answers are required.');
