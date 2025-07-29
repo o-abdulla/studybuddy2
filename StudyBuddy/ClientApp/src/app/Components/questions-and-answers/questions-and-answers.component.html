@@ -24,8 +24,7 @@
               {{ isFavorite(q) ? "Remove" : "Favorite" }}
             </button>
             
-            <button 
-              *ngIf="loggedIn"
+            <button
               class="btn btn-sm action-btn delete-btn" 
               (click)="DeleteQuestion(q.questionId)"
               title="Delete question">

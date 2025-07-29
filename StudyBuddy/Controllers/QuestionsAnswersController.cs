@@ -36,7 +36,7 @@ namespace StudyBuddy.Controllers
         public QuestionsAndAnswer PostQuestion([FromBody] QuestionsAndAnswer question)
         {
             dBContext.QuestionsAndAnswers.Add(question);
-            dBContext.SaveChanges();
+            //dBContext.SaveChanges();
             return question;
         }
 
@@ -61,7 +61,7 @@ namespace StudyBuddy.Controllers
                 dBContext.Favorites.RemoveRange(relatedFavorites);
             }
             dBContext.QuestionsAndAnswers.Remove(deleted);
-            dBContext.SaveChanges();
+            //dBContext.SaveChanges();
             return deleted;
         }
     }
