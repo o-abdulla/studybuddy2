@@ -21,6 +21,7 @@ export class QuestionsAndAnswersComponent {
   // dictionaryWordResult: Word = {} as Word;
   searchWord: string = "";
   status: string = "";
+  editingQuestion: QuestionsAndAnswers | null = null;
   // googleId: string = "";
 
   constructor(private _questionsAnswersService: QuestionsAnswersService,
@@ -170,6 +171,37 @@ ShowExampleQuestions(): void {
 trackByQuestionId(index: number, question: QuestionsAndAnswers): number {
   return question.questionId;
 }
+
+EditQuestion(question: QuestionsAndAnswers): void {
+    // Create a copy of the question to edit
+    this.editingQuestion = { ...question };
+  }
+
+  // Add this method to save the edited question
+  SaveQuestion(): void {
+    if (this.editingQuestion) {
+      this._questionsAnswersService.PutQuestion(this.editingQuestion.questionId, this.editingQuestion)
+        .subscribe(response => {
+          console.log('Question updated:', response);
+          
+          // Update the question in the list
+          const index = this.QuestionsAnswersList.findIndex(q => q.questionId === this.editingQuestion!.questionId);
+          if (index !== -1) {
+            this.QuestionsAnswersList[index] = response;
+          }
+          
+          // Clear editing state
+          this.editingQuestion = null;
+        }, error => {
+          console.error('Error updating question:', error);
+        });
+    }
+  }
+
+  // Add this method to cancel editing
+  CancelEdit(): void {
+    this.editingQuestion = null;
+  }
 
 // getDictionaryWord(): void{
 //   this.status = "loading";

@@ -44,8 +44,17 @@ namespace StudyBuddy.Controllers
         [HttpPut("{id}")]
         public QuestionsAndAnswer PutQuestion(int id, [FromBody] QuestionsAndAnswer question)
         {
-            dBContext.QuestionsAndAnswers.Update(question);
-            dBContext.SaveChanges();
+            QuestionsAndAnswer q = dBContext.QuestionsAndAnswers.Find(id);
+            if (q == null)
+            {
+                return null;
+            }
+
+            q.Questions = question.Questions;
+            q.Answers = question.Answers;
+            q.UserId = question.UserId;
+            dBContext.QuestionsAndAnswers.Update(q);
+            //dBContext.SaveChanges();
             return question;
         }
 
