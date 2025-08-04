@@ -179,7 +179,16 @@ EditQuestion(question: QuestionsAndAnswers): void {
 
   // Add this method to save the edited question
   SaveQuestion(): void {
+
+    if (!this.loggedIn) {
+      console.warn('User must be logged in to save question changes');
+      alert('Please log in to save your changes');
+      return;
+    }
+
     if (this.editingQuestion) {
+      this.editingQuestion.userId = this.user.id;
+      
       this._questionsAnswersService.PutQuestion(this.editingQuestion.questionId, this.editingQuestion)
         .subscribe(response => {
           console.log('Question updated:', response);

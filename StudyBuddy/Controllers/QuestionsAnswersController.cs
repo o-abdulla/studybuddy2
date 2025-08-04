@@ -54,7 +54,7 @@ namespace StudyBuddy.Controllers
             q.Answers = question.Answers;
             q.UserId = question.UserId;
             dBContext.QuestionsAndAnswers.Update(q);
-            //dBContext.SaveChanges();
+            dBContext.SaveChanges();
             return question;
         }
 
