@@ -31,8 +31,15 @@ export class QuestionsAndAnswersComponent {
   ngOnInit(): void {
     let exampleShown = false;
     this.authService.authState.subscribe((user: SocialUser) => {
+      const wasLoggedIn = this.loggedIn;
       this.user = user;
       this.loggedIn = (user != null);
+      
+      if (!this.loggedIn && wasLoggedIn)  {
+        window.location.reload();
+        return;
+      }
+      
       if (this.loggedIn) {
         this.ShowQuestions(this.user.id);
         this.ShowFavorites(this.user.id);
@@ -60,6 +67,11 @@ export class QuestionsAndAnswersComponent {
   }
 
   newQuestion(addQuestion: QuestionsAndAnswers) {
+    // if (!this.loggedIn) {
+    //   alert("To save your question, please log in.");
+    //   return;
+    // }
+
     
     console.log('newQuestion called with:', addQuestion);
     console.log('User logged in:', this.loggedIn);

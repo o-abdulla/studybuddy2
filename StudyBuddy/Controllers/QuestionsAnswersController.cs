@@ -33,21 +33,30 @@ namespace StudyBuddy.Controllers
 
         // POST: QuestionsAnswers
         [HttpPost]
-        public QuestionsAndAnswer PostQuestion([FromBody] QuestionsAndAnswer question)
+        public IActionResult PostQuestion([FromBody] QuestionsAndAnswer question)
         {
+            // if (string.IsNullOrEmpty(question.UserId))
+            // {
+            //     return BadRequest("User ID is required");
+            // }
+
             dBContext.QuestionsAndAnswers.Add(question);
-            //dBContext.SaveChanges();
-            return question;
+            if (question.UserId != null)
+            {
+                dBContext.SaveChanges();
+            }
+            
+            return Ok(question);
         }
 
         // PUT: QuestionsAnswers/5
         [HttpPut("{id}")]
-        public QuestionsAndAnswer PutQuestion(int id, [FromBody] QuestionsAndAnswer question)
+        public IActionResult PutQuestion(int id, [FromBody] QuestionsAndAnswer question)
         {
             QuestionsAndAnswer q = dBContext.QuestionsAndAnswers.Find(id);
             if (q == null)
             {
-                return null;
+                return NotFound();
             }
 
             q.Questions = question.Questions;
@@ -55,12 +64,12 @@ namespace StudyBuddy.Controllers
             q.UserId = question.UserId;
             dBContext.QuestionsAndAnswers.Update(q);
             dBContext.SaveChanges();
-            return question;
+            return Ok(q);
         }
 
         // DELETE: QuestionsAnswers/5
         [HttpDelete("{id}")]
-        public QuestionsAndAnswer DeleteById(int id)
+        public IActionResult DeleteById(int id)
         {
             QuestionsAndAnswer deleted = dBContext.QuestionsAndAnswers.Find(id);
             // Delete related favorites in the Favorites table
@@ -70,8 +79,11 @@ namespace StudyBuddy.Controllers
                 dBContext.Favorites.RemoveRange(relatedFavorites);
             }
             dBContext.QuestionsAndAnswers.Remove(deleted);
-            //dBContext.SaveChanges();
-            return deleted;
+            if (deleted != null && deleted.UserId != null)
+            {
+                dBContext.SaveChanges();
+            }
+            return Ok(deleted);
         }
     }
 }
